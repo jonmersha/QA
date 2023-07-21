@@ -38,7 +38,7 @@ class _QuizState extends State<Quiz> {
             ),
             child: activeScreeens == 'start'
                 ? StartScreen(transitions)
-                : const QuationScreen()),
+                : QuationScreen()),
       ),
     );
   }
