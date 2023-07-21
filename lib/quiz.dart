@@ -31,10 +31,10 @@ class _QuizState extends State<Quiz> {
       home: Scaffold(
         body: Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.purple, Color.fromARGB(255, 172, 13, 212)],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter),
+              gradient: LinearGradient(colors: [
+                Color.fromARGB(255, 77, 12, 189),
+                Color.fromARGB(255, 121, 26, 223)
+              ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
             ),
             child: activeScreeens == 'start'
                 ? StartScreen(transitions)
