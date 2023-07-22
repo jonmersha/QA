@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:quize_app/data/quations.dart';
 import 'package:quize_app/quation_screen.dart';
+import 'package:quize_app/result_screen.dart';
 import 'package:quize_app/start_screen.dart';
 
 class Quiz extends StatefulWidget {
@@ -10,7 +12,8 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-  Widget? activeScreen;
+  final List<String> _selectedAnwers = [];
+  //var activeScreen;
   String activeScreeens = 'start';
 
   // @override
@@ -21,25 +24,52 @@ class _QuizState extends State<Quiz> {
 
   void transitions() {
     setState(() {
-      activeScreeens = 'quations';
+      activeScreeens = 'questions';
+    });
+  }
+
+  void chooseAnswer(String anwers) {
+    _selectedAnwers.add(anwers);
+    if (_selectedAnwers.length == quations.length) {
+      //switching to result
+      //selectedAnwers.clear();
+      setState(() {
+        activeScreeens = 'result';
+      });
+    }
+  }
+
+  void restartExam() {
+    _selectedAnwers.clear();
+    setState(() {
+      activeScreeens = 'questions';
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget screenWiget = StartScreen(transitions);
+    if (activeScreeens == 'questions') {
+      screenWiget = QuationScreen(chooseAnswer);
+    }
+    if (activeScreeens == 'result') {
+      screenWiget = ResultScreen(
+        restartExam,
+        _selectedAnwers,
+      );
+    }
+
     return MaterialApp(
-      home: Scaffold(
-        body: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: [
-                Color.fromARGB(255, 77, 12, 189),
-                Color.fromARGB(255, 121, 26, 223)
-              ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
-            ),
-            child: activeScreeens == 'start'
-                ? StartScreen(transitions)
-                : QuationScreen()),
+        home: Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(colors: [
+            Color.fromARGB(255, 77, 12, 189),
+            Color.fromARGB(255, 121, 26, 223)
+          ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+        ),
+        child: screenWiget,
       ),
-    );
+    ));
   }
 }

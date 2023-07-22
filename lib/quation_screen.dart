@@ -5,8 +5,8 @@ import 'package:quize_app/widget/custom_elevated_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class QuationScreen extends StatefulWidget {
-  QuationScreen({super.key});
-
+  const QuationScreen(this.onSlectAnswers, {super.key});
+  final void Function(String answer) onSlectAnswers;
   @override
   State<QuationScreen> createState() => _QuationScreenState();
 }
@@ -14,7 +14,8 @@ class QuationScreen extends StatefulWidget {
 class _QuationScreenState extends State<QuationScreen> {
   var currentQuestionsIndex = 0;
 
-  void answersQuastion() {
+  void answersQuastion(String selectedAnswers) {
+    widget.onSlectAnswers(selectedAnswers);
     setState(() {
       if (currentQuestionsIndex < quations.length - 1)
         currentQuestionsIndex++;
@@ -59,28 +60,13 @@ class _QuationScreenState extends State<QuationScreen> {
                 .getShufledAnswers()
                 .map((e) => CustomerElevatedButton(
                       answer: e,
-                      onTap: answersQuastion,
+                      onTap: () {
+                        answersQuastion(e);
+                      },
                     ))
           ],
         ),
       ),
-    );
-  }
-
-  Column eachQuations(QuizQuestion currentQuation) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          currentQuation.text,
-          style: TextStyle(color: Colors.white, fontSize: 23),
-        ),
-        for (int j = 0; j < currentQuation.answers.length; j++)
-          CustomerElevatedButton(
-            answer: currentQuation.answers[j],
-            onTap: () {},
-          ),
-      ],
     );
   }
 }
